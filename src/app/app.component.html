@@ -12,8 +12,13 @@
   <div class="places-box">
     <div class="place-item" *ngFor="let item of places">
       <h3>{{ item.name }}</h3>
-      <h4><strong>Location: </strong>{{ item.location | json }}</h4>
-      <h4><strong>Contact: </strong>{{ item.contact | json }}</h4>
-    <div>
+      <div class="place-item-info">
+        <strong>Location: </strong><br />
+        <div *ngFor="let item of item.location.formattedAddress">
+          {{ item }}<br />
+        </div>
+        <p><strong>Contact: </strong>{{ item.contact.formattedPhone }}</p>
+      </div>
+    </div>
   </div>
 </div>

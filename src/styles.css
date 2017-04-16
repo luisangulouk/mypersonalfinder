@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Cabin|Lobster');
+
+body{
+    background-color: #F0F0F0;
+}
+.header {
+    background-color: #0A5984;
+    text-align: center;
+    font-family: 'Lobster', cursive;
+    font-size: 38px;
+    padding:20px 0px;
+    color:#fff;
+}
