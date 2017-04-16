@@ -1,3 +1,19 @@
-<h1>
-  {{title}}
-</h1>
+<div class="container">
+  <div class="location-box">  
+    <h2>Current Location</h2>
+    <div *ngIf="currentLocation.latitude!==0 && currentLocation.longitude!==0">
+      <p>Latitude: {{ currentLocation.latitude }}</p>
+      <p>Longitude: {{ currentLocation.longitude }}</p>  
+      <button type="button" class="btn btn-primary" (click)="findPlacesNearBy(currentLocation.longitude,currentLocation.latitude)">Find Places</button>
+      <div><img [src]="staticMap"  height="300" width="600"></div>
+    </div>
+  </div>
+
+  <div class="places-box">
+    <div class="place-item" *ngFor="let item of places">
+      <h3>{{ item.name }}</h3>
+      <h4><strong>Location: </strong>{{ item.location | json }}</h4>
+      <h4><strong>Contact: </strong>{{ item.contact | json }}</h4>
+    <div>
+  </div>
+</div>
