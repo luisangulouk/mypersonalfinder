@@ -11,15 +11,10 @@ export class FoursquaresService {
     constructor(
         private http: Http,
         @Inject('global_options') private options: any) { }
-/*
-&query=coffee
-&intent=checkin
-*/
 
     getPlaces(longitude:number,latitude:number) {
 
         let url = `${this.options.apiEndPoint}&ll=${latitude}%2C${longitude}&query=coffee&intent=checkin`;
-        console.log(url);
         return this.http.get(url)
             .map(this.result = this.extractData)
             .catch(this.handleError);

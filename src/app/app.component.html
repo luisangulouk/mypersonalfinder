@@ -1,11 +1,13 @@
 <div class="container">
-  <div class="location-box">  
-    <h2>Current Location</h2>
+    <div class="index-loading" *ngIf="currentLocation.latitude===0 && currentLocation.longitude===0">
+      <p>Please allow us to get your current location to provide the venues around you</p>
+      <img src="/assets/img/img-loading.gif" width="45" height="45">
+    </div>
+  <div class="location-box">
     <div *ngIf="currentLocation.latitude!==0 && currentLocation.longitude!==0">
-      <p>Latitude: {{ currentLocation.latitude }}</p>
-      <p>Longitude: {{ currentLocation.longitude }}</p>  
+      <div><img [src]="staticMap"></div>
+      <p>Current Location: Latitude: {{ currentLocation.latitude | number:'1.1-5' }} - Longitude: {{ currentLocation.longitude | number:'1.1-5' }}</p>
       <button type="button" class="btn btn-primary" (click)="findPlacesNearBy(currentLocation.longitude,currentLocation.latitude)">Find Places</button>
-      <div><img [src]="staticMap"  height="300" width="600"></div>
     </div>
   </div>
 
@@ -13,11 +15,30 @@
     <div class="place-item" *ngFor="let item of places">
       <h3>{{ item.name }}</h3>
       <div class="place-item-info">
-        <strong>Location: </strong><br />
+        <strong>Address: </strong><br />
         <div *ngFor="let item of item.location.formattedAddress">
           {{ item }}<br />
         </div>
-        <p><strong>Contact: </strong>{{ item.contact.formattedPhone }}</p>
+        <p *ngIf="item.contact.formattedPhone"><strong>Contact No: </strong>{{ item.contact.formattedPhone }}</p>
+      </div>
+        <span *ngIf="item.location.lng"><button type="button" class="btn btn-primary" (click)="showChildModal(item.name,item.location.lat,item.location.lng)">Map</button></span>
+        <span *ngIf="item.url"><a [href]="item.url" target="_blank" class="btn btn-primary">Website</a></span>
+        <span *ngIf="item.contact.twitter"><a [href]="twitter_url" class="btn btn-primary" target="_blank" (click)="followOnTwitter(item.contact.twitter)"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></span>
+    </div>
+  </div>
+</div>
+
+<div bsModal #mapContainer="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">{{ selectedVenue.name }}</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+              <div><img [src]="selectedVenue.map"  height="400" width="250"></div>
       </div>
     </div>
   </div>

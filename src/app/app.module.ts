@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, Http } from '@angular/http';
+import { ModalModule } from 'ngx-bootstrap';
 
 import { AppComponent } from './app.component';
 import { FoursquaresService } from '../app/common/foursquares.service';
@@ -20,6 +21,7 @@ const globalOptions = {
     BrowserModule,
     FormsModule,
     HttpModule,
+    ModalModule.forRoot()
   ],
   providers: [
     FoursquaresService,
