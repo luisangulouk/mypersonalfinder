@@ -12,9 +12,17 @@ export class FoursquaresService {
         private http: Http,
         @Inject('global_options') private options: any) { }
 
-    getPlaces(longitude:number,latitude:number) {
+    getPlacesByLL(longitude:number,latitude:number) {
 
         let url = `${this.options.apiEndPoint}&ll=${latitude}%2C${longitude}&query=coffee&intent=checkin`;
+        return this.http.get(url)
+            .map(this.result = this.extractData)
+            .catch(this.handleError);
+    }
+
+    getPlacesByName(name:string) {
+
+        let url = `${this.options.apiEndPoint}&near=${name}&query=coffee&redius=200&intent=browse`;
         return this.http.get(url)
             .map(this.result = this.extractData)
             .catch(this.handleError);

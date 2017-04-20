@@ -24,19 +24,14 @@ export class AppComponent implements OnInit{
     name:'',
     map:''
   }
+  public user_message:string='';
+  public geolocation:boolean=true;
 
   constructor(public FoursquaresService: FoursquaresService, 
               public GeolocationService: GeolocationService){}
 
   ngOnInit(){
 
-    this.GeolocationService.getLocation({enableHighAccuracy:false}).subscribe(
-      res=>{
-        this.currentLocation.longitude = res.coords.longitude;
-        this.currentLocation.latitude = res.coords.latitude;
-        this.staticMap = this.getLocationOnMap(this.currentLocation.longitude,this.currentLocation.latitude,'800x300');
-      }
-    );
   }
 
   getLocationOnMap(longitude:number, latitude:number, size:string):string{
@@ -50,12 +45,38 @@ export class AppComponent implements OnInit{
     return staticMap;
   }
 
-  findPlacesNearBy(longitude:number, latitude:number):void{
-
-    this.FoursquaresService.getPlaces(longitude, latitude).subscribe(
-      res => {
-        this.places=res.response.venues}
+  findMyLocation(){
+      this.GeolocationService.getLocation({enableHighAccuracy:false}).subscribe(
+      res=>{
+        this.geolocation=true;
+        this.currentLocation.longitude = res.coords.longitude;
+        this.currentLocation.latitude = res.coords.latitude;
+        this.staticMap = this.getLocationOnMap(this.currentLocation.longitude,this.currentLocation.latitude,'800x300');
+        this.findPlacesNearBy({longitude:this.currentLocation.longitude,latitude:this.currentLocation.latitude});        
+      },
+      error=>{
+        console.log(error);
+        this.geolocation=false;
+        this.user_message=error;
+      }
     );
+  }
+
+  findPlacesNearBy(place):void{
+
+    if(place.longitude){
+      this.FoursquaresService.getPlacesByLL(place.longitude, place.latitude).subscribe(
+        res => {
+          this.places=res.response.venues;
+        }
+      );
+    }else{
+      this.FoursquaresService.getPlacesByName(place.name).subscribe(
+        res => {
+          this.places=res.response.venues;
+        }
+      );      
+    }
   }
 
   followOnTwitter(twitter_acc){
