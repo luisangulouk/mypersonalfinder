@@ -1,3 +1,11 @@
+.geolocation-feedback {
+    font-size:10px;
+    font-style: italic;
+    color:#808080;
+}
+.geolocation-feedback:before{
+    content:'Location Service: ';
+}
 .places-box, .location-box{
     display:block;
     padding:10px;
