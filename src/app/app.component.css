@@ -1,3 +1,6 @@
+.container> button{
+    margin:5px 14px;
+}
 .geolocation-feedback {
     font-size:10px;
     font-style: italic;
@@ -37,6 +40,14 @@
 @media all and (max-width: 550px) {
     .location-box img{
         height:200px;
+    }
+    .place-item{
+        display:block;
+        padding:0px 10px 10px 10px;
+        width:100%;
+        border: 0px solid red;
+        background-color: #DB9900;
+        border-radius: 4px;
     }
 }
 

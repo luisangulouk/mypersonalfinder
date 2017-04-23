@@ -24,6 +24,6 @@ body{
     text-align: center;
     margin-top:25px;
 }
-button {
+button, a {
     margin:3px 0px;
 }

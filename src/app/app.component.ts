@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, EventEmitter } from '@angular/core';
 import { FoursquaresService } from '../app/common/foursquares.service';
 import { GeolocationService } from '../app/common/geolocation.service';
 import { Observable } from 'rxjs/Observable';
@@ -12,27 +12,14 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 export class AppComponent implements OnInit{
   @ViewChild('mapContainer') public mapContainer: ModalDirective;
   public places:any;
-  public currentLocation={ 
-    latitude:0, 
-    longitude:0 
-  }
+  public coords={lat:0,lng:0};
   public errorMessage:any;
-  public location:any;
-  public staticMap:string='';
   public twitter_url:string='https://twitter.com/intent/tweet';
-  public selectedVenue={
-    name:'',
-    map:''
-  }
-  public user_message:string='';
-  public geolocation:boolean=true;
+  public selectedVenue={name:'',map:''};
 
-  constructor(public FoursquaresService: FoursquaresService, 
-              public GeolocationService: GeolocationService){}
+  constructor(public FoursquaresService: FoursquaresService){}
 
-  ngOnInit(){
-
-  }
+  ngOnInit(){}
 
   getLocationOnMap(longitude:number, latitude:number, size:string):string{
     let staticMap = 'https://maps.googleapis.com/maps/api/staticmap';
@@ -45,38 +32,16 @@ export class AppComponent implements OnInit{
     return staticMap;
   }
 
-  findMyLocation(){
-      this.GeolocationService.getLocation({enableHighAccuracy:false}).subscribe(
-      res=>{
-        this.geolocation=true;
-        this.currentLocation.longitude = res.coords.longitude;
-        this.currentLocation.latitude = res.coords.latitude;
-        this.staticMap = this.getLocationOnMap(this.currentLocation.longitude,this.currentLocation.latitude,'800x300');
-        this.findPlacesNearBy({longitude:this.currentLocation.longitude,latitude:this.currentLocation.latitude});        
-      },
-      error=>{
-        console.log(error);
-        this.geolocation=false;
-        this.user_message=error;
+  findPlacesNearBy():void{
+    this.FoursquaresService.getPlacesByLL(this.coords.lng, this.coords.lat).subscribe(
+      res => {
+        this.places=res.response.venues;
       }
     );
   }
 
-  findPlacesNearBy(place):void{
-
-    if(place.longitude){
-      this.FoursquaresService.getPlacesByLL(place.longitude, place.latitude).subscribe(
-        res => {
-          this.places=res.response.venues;
-        }
-      );
-    }else{
-      this.FoursquaresService.getPlacesByName(place.name).subscribe(
-        res => {
-          this.places=res.response.venues;
-        }
-      );      
-    }
+  getMapLocation(coords){
+    this.coords = coords;
   }
 
   followOnTwitter(twitter_acc){
@@ -85,7 +50,7 @@ export class AppComponent implements OnInit{
 
   public showChildModal(name,lat,lng):void {
     this.selectedVenue.name=name;
-    this.selectedVenue.map=this.getLocationOnMap(lng,lat,'250x400');
+    this.selectedVenue.map = this.getLocationOnMap(lng,lat,'250x400');
     this.mapContainer.show();
   }
  

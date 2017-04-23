@@ -1,20 +1,6 @@
 <div class="container">
-  
-  <div class="geolocation-feedback" *ngIf="user_message" [innerHTML]="user_message"></div>
-  <form #searchForm="ngForm" (ngSubmit)="searchForm.valid && findPlacesNearBy({name:criteria.value})" autocomplete="off" novalidate>
-  <p>Find places in the City of your preference or simply allow us to get places around your current location <i class="fa fa-location-arrow" aria-hidden="true"></i></p>    
-  <div class="input-group">
-    <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-    <input type="text" name="criteria" ngModel #criteria class="form-control" placeholder="place, city, town..." aria-describedby="basic-addon1" required>
-    <div class="input-group-addon"><a href="#" (click)="findMyLocation()"><i class="fa fa-location-arrow" aria-hidden="true"></i></a></div>
-  </div>
-    <button type="submit" class="btn btn-primary" >Find Places</button>
-  </form>
-
-  <div *ngIf="currentLocation.latitude!==0 && currentLocation.longitude!==0" class="location-box">
-    <div><img [src]="staticMap"></div>
-  </div>
- 
+    <app-googlemaps (coords)="getMapLocation($event)"></app-googlemaps>
+    <button type="submit" class="btn btn-primary" (click)="findPlacesNearBy()">Find Places</button>
   <div class="places-box">
     <div class="place-item" *ngFor="let item of places">
       <h3>{{ item.name }}</h3>

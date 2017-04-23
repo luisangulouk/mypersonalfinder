@@ -1,0 +1,15 @@
+<div class="container">
+  <p>Find places in the City of your preference or simply allow us to get places around your current location <i class="fa fa-location-arrow" aria-hidden="true"></i></p>    
+  <div class="input-group">
+    <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+      <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl">
+    <div class="input-group-addon"><i class="fa fa-location-arrow" aria-hidden="true"></i></div>
+  </div>
+
+<div class="map-wrapper">
+    <sebm-google-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+      <sebm-google-map-marker [latitude]="latitude" [longitude]="longitude"></sebm-google-map-marker>
+    </sebm-google-map>
+</div>
+
+</div>

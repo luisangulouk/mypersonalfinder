@@ -22,7 +22,7 @@ export class FoursquaresService {
 
     getPlacesByName(name:string) {
 
-        let url = `${this.options.apiEndPoint}&near=${name}&query=coffee&redius=200&intent=browse`;
+        let url = `${this.options.apiEndPoint}&near=${name}&query=coffee%2Cpub%2Cshop&redius=200&intent=browse`;
         return this.http.get(url)
             .map(this.result = this.extractData)
             .catch(this.handleError);
